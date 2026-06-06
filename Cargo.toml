@@ -1,0 +1,39 @@
+[workspace]
+resolver = "2"
+members = [
+    "contracts/position-manager",
+    "contracts/pair-registry",
+    "contracts/vault",
+    "crates/math",
+    "crates/reflector-adapter",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[workspace.dependencies]
+soroban-sdk = "=26.0.1"
+stellar-access = "=0.7.1"
+stellar-macros = "=0.7.1"
+stellar-contract-utils = "=0.7.1"
+stellar-tokens = "=0.7.1"
+
+math = { path = "crates/math" }
+reflector-adapter = { path = "crates/reflector-adapter" }
+
+[profile.release]
+opt-level = "z"
+overflow-checks = true
+debug = 0
+strip = "symbols"
+debug-assertions = false
+panic = "abort"
+codegen-units = 1
+lto = true
+
+[profile.release-with-logs]
+inherits = "release"
+debug-assertions = true

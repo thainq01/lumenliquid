@@ -1,0 +1,23 @@
+[package]
+name = "reflector-adapter"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[lib]
+crate-type = ["rlib"]
+doctest = false
+
+[features]
+default = []
+# Enables the in-memory `mock` module. Requires `alloc`, so do not enable for
+# `no_std` cdylib release builds — only for test consumers.
+testutils = []
+
+[dependencies]
+soroban-sdk = { workspace = true }
+math = { workspace = true }
+
+[dev-dependencies]
+soroban-sdk = { workspace = true, features = ["testutils"] }
