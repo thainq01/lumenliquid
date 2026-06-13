@@ -309,6 +309,20 @@ impl PairRegistryContract {
         Ok(())
     }
 
+    pub fn set_position_manager(
+        env: Env,
+        position_manager: Address,
+    ) -> Result<(), PairRegistryError> {
+        let admin = storage::read_admin(&env)?;
+        admin.require_auth();
+        storage::write_position_manager(&env, &position_manager);
+        env.events().publish(
+            (Symbol::new(&env, "set_pm"),),
+            position_manager,
+        );
+        Ok(())
+    }
+
     pub fn set_max_pos_usdc(env: Env, value: i128) -> Result<(), PairRegistryError> {
         require_admin(&env)?;
         if value < 0 {

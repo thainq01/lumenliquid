@@ -272,7 +272,7 @@ fn rollover_acc_grows_after_first_baseline() {
     };
     let liq = client.get_trade_liquidation_price(&trade, &l1);
     // No funding rate set → only rollover bites. acc=1000 → fee = 1000 * 1e10 / 1e7 = 1e6 USDC scale = 0.1 USDC
-    // (effectively nothing) liq just below open*0.99.
+    // (effectively nothing) liq just below open*0.99 (closed-form formula).
     assert!(liq > 0);
     assert!(liq < trade.open_price);
 }

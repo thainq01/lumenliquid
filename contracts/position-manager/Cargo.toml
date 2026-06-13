@@ -6,7 +6,7 @@ license.workspace = true
 publish = false
 
 [lib]
-crate-type = ["lib"]
+crate-type = ["lib", "cdylib"]
 doctest = false
 
 [dependencies]
@@ -16,3 +16,7 @@ reflector-adapter = { workspace = true }
 
 [dev-dependencies]
 soroban-sdk = { workspace = true, features = ["testutils"] }
+reflector-adapter = { workspace = true, features = ["testutils"] }
+pair-registry = { path = "../pair-registry" }
+vault = { path = "../vault" }
+

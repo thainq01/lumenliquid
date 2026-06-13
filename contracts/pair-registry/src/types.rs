@@ -9,7 +9,8 @@ use reflector_adapter::ReflectorAsset;
 /// Scales:
 /// * `spread_p` and `max_neg_pnl_p` are at `P_SCALE = 1e10` (e.g. `5e7` = 0.05%).
 /// * `min_lev_pos_usdc` and `max_oi_usdc` are USDC at `USDC_SCALE = 1e7`.
-/// * `liq_threshold_p` and `max_gain_p` are integer percent (NOT P_SCALE), e.g. `90`, `900`.
+/// * `liq_threshold_p` and `max_gain_p` are integer percent (NOT P_SCALE),
+///   e.g. `90`, `900`.
 ///
 /// `min_leverage`/`max_leverage` are integer leverages (e.g. `2`, `5`, `50`).
 #[contracttype]
@@ -42,7 +43,8 @@ pub struct Group {
     pub close_fee_p: i128,
 }
 
-/// Rollover-fee accumulator state for a pair.
+/// Rollover-fee accumulator state for a pair. Tracks the per-pair rollover
+/// fields used by the position manager.
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct RolloverState {

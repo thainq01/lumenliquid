@@ -1,18 +1,4 @@
-# Rust
 target/
 **/*.rs.bk
 Cargo.lock
-
-# macOS
 .DS_Store
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# Env
-.env
-.env.local
-*.log

@@ -5,7 +5,7 @@ members = [
     "contracts/pair-registry",
     "contracts/vault",
     "crates/math",
-    "crates/reflector-adapter",
+    "crates/reflector-adapter", "contracts/mock-oracle",
 ]
 
 [workspace.package]

@@ -235,7 +235,7 @@ impl SubscriptionSource for ReflectorSubscription {
 
 /// Convert `oracle_price` (at `10.pow(decimals)`) to the project's `PRICE_SCALE`.
 ///
-/// PRICE_SCALE is 1e10 (PRECISION). Reflector's pulse oracle reports prices
+/// PRICE_SCALE is 1e10 (`PRECISION`). Reflector's pulse oracle reports prices
 /// at `decimals = 14` so we generally divide by `10^4`. We handle the inverse
 /// (oracle decimals < PRICE_SCALE exponent) too, by multiplying.
 pub fn rescale_to_price_scale(oracle_price: i128, oracle_decimals: u32) -> Result<i128, MathError> {

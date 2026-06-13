@@ -3,7 +3,7 @@
 /// USDC native scale on Stellar (matches the SAC).
 pub const USDC_SCALE: i128 = 10_000_000; // 1e7
 
-/// Price scale, `PRECISION = 1e10`.
+/// Price scale: `PRECISION = 1e10`.
 pub const PRICE_SCALE: i128 = 10_000_000_000; // 1e10
 
 /// Percentage scale, used for fee rates, PnL caps, liq thresholds, etc.
@@ -15,7 +15,7 @@ pub const DEFAULT_GROUP_FEE_P: i128 = 80_000_000;
 /// `MAX_GAIN_P = 900` (= 900%, expressed as integer percent — NOT P_SCALE).
 pub const MAX_GAIN_P: u32 = 900;
 
-/// `EXCEPTION_PAIR_MAX_GAIN_P = 300` for flagged pairs (xBTC/xETH on indices 100/101).
+/// `EXCEPTION_PAIR_MAX_GAIN_P = 300` for flagged pairs (e.g. xBTC/xETH).
 pub const EXCEPTION_PAIR_MAX_GAIN_P: u32 = 300;
 
 /// `MAX_SL_P = 75` (max stop-loss = -75% of collateral).

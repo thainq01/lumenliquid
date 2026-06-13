@@ -14,10 +14,11 @@ use crate::scale::P_SCALE;
 /// `acc_per_collateral` is a per-pair monotonically increasing accumulator (USDC at `USDC_SCALE`)
 /// representing fee-per-unit-collateral since pair inception.
 ///
+/// Mirrors `getPendingAccRolloverFees`:
 ///   acc' = acc + (Δledger * rolloverFeePerLedgerP * USDC_SCALE) / P_SCALE / 100
 ///
-/// Result is in USDC (1e7) per unit collateral (1e7) — i.e. dimensionless after dividing by
-/// collateral (see `rollover_fee_for_trade`).
+/// The unit scales with `USDC_SCALE` (Stellar USDC is 1e7). Result is in USDC (1e7) per unit
+/// collateral (1e7) — i.e. dimensionless after dividing by collateral (see `rollover_fee_for_trade`).
 pub fn pending_acc_rollover(
     acc_per_collateral: i128,
     delta_ledgers: u64,
@@ -41,6 +42,7 @@ pub fn pending_acc_rollover(
 
 /// Per-trade rollover fee in USDC.
 ///
+/// Mirrors `getTradeRolloverFeePure`:
 ///   fee = (acc_now - acc_open) * collateral / USDC_SCALE
 pub fn rollover_fee_for_trade(
     acc_open: i128,
@@ -57,6 +59,7 @@ pub fn rollover_fee_for_trade(
 
 /// Asymmetric pending funding accumulators (long, short).
 ///
+/// Mirrors `getPendingAccFundingFees`:
 ///   paidByLongs = (oiLong - oiShort) * Δledger * fundingPerLedgerP / P_SCALE / 100
 ///   accLong'  = accLong  + paidByLongs * USDC_SCALE / oiLong   (if oiLong > 0)
 ///   accShort' = accShort - paidByLongs * USDC_SCALE / oiShort  (if oiShort > 0)
@@ -105,6 +108,7 @@ pub fn pending_acc_funding(
 
 /// Per-trade funding fee in USDC. Positive = trader pays, negative = trader receives.
 ///
+/// Mirrors `getTradeFundingFeePure`:
 ///   fee = (acc_now - acc_open) * collateral * leverage / USDC_SCALE
 pub fn funding_fee_for_trade(
     acc_open: i128,
@@ -121,13 +125,14 @@ pub fn funding_fee_for_trade(
     staged.checked_mul(leverage as i128).ok_or(MathError::Overflow)
 }
 
-/// Floor `funding_fee` at `min_funding_fee`. Both at USDC scale.
+/// Floor `funding_fee` at `min_funding_fee` (mirrors the `minFundingFee` clamp). Both at USDC scale.
 pub fn clamp_funding_fee(funding_fee: i128, min_funding_fee: i128) -> i128 {
     if funding_fee < min_funding_fee { min_funding_fee } else { funding_fee }
 }
 
 /// Dynamic price impact `(impact_p, price_after_impact)`.
 ///
+/// Mirrors `getTradePriceImpactPure`:
 ///   impact_p     = (start_oi + trade_oi/2) * P_SCALE / USDC_SCALE / one_percent_depth
 ///   price_impact = impact_p * open_price / P_SCALE / 100
 ///   price_after  = open_price ± price_impact   (long: +, short: -)
@@ -164,7 +169,7 @@ pub fn price_impact(
     Ok((impact_p, price_after))
 }
 
-/// Apply spread on top of price-after-impact (`marketExecutionPrice`).
+/// Apply spread on top of price-after-impact (the `marketExecutionPrice` step).
 ///
 /// `spread_p` is expressed at `P_SCALE` (e.g. `5e7` for 0.05%).
 ///   spread_amount = price * spread_p / P_SCALE / 100
@@ -187,8 +192,8 @@ pub fn apply_spread(
     }
 }
 
-/// Combined market execution price = spread+impact applied with impact first,
-/// then spread. Returns `(impact_p, market_price)`.
+/// Combined market execution price = spread+impact applied in the order
+/// (impact first, then spread). Returns `(impact_p, market_price)`.
 pub fn apply_spread_and_impact(
     open_price: i128,
     spread_p: i128,
@@ -207,6 +212,7 @@ pub fn apply_spread_and_impact(
 
 /// Signed PnL percentage at `P_SCALE`. Positive = profit, negative = loss.
 ///
+/// Mirrors `currentPercentProfit`:
 ///   raw_p = (close - open) / open * leverage * 100   (long)
 ///   raw_p = (open - close) / open * leverage * 100   (short)
 /// then capped at `±max_gain_p` (an integer percent like 900).

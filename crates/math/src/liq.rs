@@ -1,8 +1,8 @@
 //! Liquidation price + payout-with-insolvency-waiver math.
 //!
-//! `ledger.sequence` advancement happens at the call site — the formulas
-//! themselves are time-agnostic and consume already-computed rollover/funding
-//! fees.
+//! Implements `getTradeLiquidationPricePure` and `getTradeValuePure`. Time
+//! advancement happens at the call site via `ledger.sequence`; the formulas
+//! here are time-agnostic — they consume already-computed rollover/funding fees.
 
 use crate::errors::MathError;
 use crate::mul_div_floor;
@@ -10,6 +10,7 @@ use crate::scale::P_SCALE;
 
 /// Liquidation price.
 ///
+/// Mirrors `getTradeLiquidationPricePure`:
 ///   distance = open * (collateral * liq_threshold_p / 100 - rollover - funding) / collateral / leverage
 ///   long:  liq = open - distance
 ///   short: liq = open + distance
@@ -71,7 +72,7 @@ pub fn is_liquidatable(
     if is_long { observed_price <= liq_price } else { observed_price >= liq_price }
 }
 
-/// Payout decision with insolvency waiver.
+/// Payout decision with insolvency waiver, mirroring `getTradeValuePure`.
 ///
 /// Inputs:
 ///   - `collateral` is `effective_collateral` (already net of open fee)

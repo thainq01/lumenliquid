@@ -1,9 +1,11 @@
-//! Math correctness tests against reference fixtures.
+//! Math correctness tests against fixed reference fixtures.
 //!
 //! Scales used by the test fixtures:
 //!   - PRECISION (P_SCALE) = 1e10
-//!   - USDC = 1e7 (Soroban scale)
-//!   - price = 1e10
+//!   - USDC = 1e7 (Soroban / Stellar SAC scale)
+//! Price stays at 1e10 across all assertions. Each closed-form value is
+//! computed from the formulas in `crates/math/src/{fees,liq}.rs` evaluated at
+//! these scales.
 
 use math::fees::{
     apply_spread_and_impact, clamp_funding_fee, current_percent_profit, funding_fee_for_trade,
@@ -34,7 +36,7 @@ fn rollover_accumulator_zero_rate_is_noop() {
 
 #[test]
 fn rollover_accumulator_linear_increment() {
-    // formula:   acc' = acc + Δblocks * rate * USDC_SCALE / PRECISION / 100
+    // formula:   acc' = acc + Δledgers * rate * USDC_SCALE / PRECISION / 100
     // pick Δ=100 ledgers, rate=1e6 (1e6/1e10 = 0.0001% per ledger ≈ 0.36%/hr at 5s/ledger)
     let delta = 100u64;
     let rate = 1_000_000_i128;

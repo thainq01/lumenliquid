@@ -16,7 +16,7 @@ pub struct Price(pub i128);
 #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct PercentP(pub i128);
 
-/// Leverage. Stored as `u32` — integer leverages (e.g. `2`, `5`, `50`).
+/// Leverage. Stored as `u32` — leverages are integer-valued (e.g. `2`, `5`, `50`).
 #[contracttype]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Leverage(pub u32);
